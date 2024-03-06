@@ -1,6 +1,5 @@
-const todoList = [
-  ];
-render()
+const todoList = JSON.parse(localStorage.getItem('todoList')) || [];
+render();
 
 
 function render(){
@@ -29,6 +28,7 @@ document.querySelector('.js-todo-list')
       })
 
    })
+   saveTodoList();
 }
 
 document.querySelector('.js-add-todo-button').addEventListener('click',() => {
@@ -40,6 +40,16 @@ function addTodo(){
    const name = inputEle.value;
    const dateInputEle = document.querySelector('.js-due-dueDate')
    const dueDate = dateInputEle.value;
+
+   if (name.trim() === '') {
+      alert('Please enter a Todo name before adding.');
+      return; // Stop execution if the name input is empty
+  }
+
+  if (dueDate.trim() === '') {
+   alert('Please enter a due date before adding.');
+   return; // Stop execution if the name input is empty
+}
    todoList.push({
      // name: name,dueDate: dueDate}//SHORTHAND PROPERTY
    name, dueDate});
@@ -49,8 +59,15 @@ function addTodo(){
    render()
 }
 
+
+
 document.body.addEventListener('keydown', (event) => {
    if(event.key === 'Enter'){
       addTodo();
    }
  })
+
+ function saveTodoList() {
+   // Save the todoList to local storage
+   localStorage.setItem('todoList', JSON.stringify(todoList));
+}
